@@ -166,7 +166,9 @@ class GlobalSummaryWriter(object):
             self.smw.add_text(tag, text_string, global_step=self.text_tag_to_step[tag], walltime=walltime)
 
     @staticmethod
-    def getSummaryWriter():
+    def getSummaryWriter(logdir=None, comment='', purge_step=None, max_queue=10,
+                         flush_secs=120, filename_suffix='', write_to_disk=True, log_dir=None,
+                         coalesce_process=True, **kwargs):
         """Get the writer from global namespace.
 
         Examples::
@@ -188,7 +190,11 @@ class GlobalSummaryWriter(object):
         """
         global _writer
         if not hasattr(_writer, "smw") or _writer.smw is None:
-            _writer = GlobalSummaryWriter()
+            _writer = GlobalSummaryWriter(
+                logdir=None, comment='', purge_step=None, max_queue=10,
+                flush_secs=120, filename_suffix='', write_to_disk=True, log_dir=None,
+                coalesce_process=True, **kwargs
+            )
 
         print("Using the global logger in:", _writer.smw.file_writer.get_logdir())
         return _writer
